@@ -18,7 +18,7 @@ app.configure('development', function(){
 });
 
 
-app.configure('server-test', function(){
+app.configure('server', function(){
 
     console.log('Running on server-test mode..');
 
