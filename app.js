@@ -31,6 +31,15 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
+// allow cross site scripting, be careful with that in production
+app.all('*', function(req, res, next) {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+    next();
+});
+
 // SET environment configuration
 var config = require('./config/env');
 
