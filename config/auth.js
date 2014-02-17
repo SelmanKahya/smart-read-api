@@ -1,3 +1,5 @@
+var crypto = require('crypto');
+
 exports.init = function(passport, passportStrategy){
     //==================================================================
     // Define the strategy to be used by PassportJS
@@ -13,6 +15,9 @@ exports.init = function(passport, passportStrategy){
                 user_password: password
             }
 
+            // md5 user password, we wouldn't want to keep user passwords in plain text, right?
+            user.user_password = crypto.createHash('md5').update(user.user_password).digest('hex');
+                              console.log(user.user_password)
             db.execute('SELECT * FROM user WHERE user_email = ? AND user_password = ?', [user.user_email, user.user_password], function(err, result){
 
                 if(err)

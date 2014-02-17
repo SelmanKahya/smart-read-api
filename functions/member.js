@@ -1,5 +1,6 @@
 var db = require('../lib/db.js');
 var resultModel = require('../lib/models/result.js');
+var crypto = require('crypto');
 
 // register a user
 exports.register = function(req, res){
@@ -14,10 +15,13 @@ exports.register = function(req, res){
         user_created_date: new Date()
     }
 
+    // md5 user password, we wouldn't want to keep user passwords in plain text, right?
+    user.user_password = crypto.createHash('md5').update(user.user_password).digest('hex');
+
     db.execute('SELECT * FROM user WHERE user_email = ?', [user.user_email], function(err, result){
 
         if(err)
-            res.send(500, new resultModel.result(false, {}, ['Error while logging in!]']));
+            res.send(500, new resultModel.result(false, {}, ['Error while registering!]']));
 
         else{
 
