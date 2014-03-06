@@ -12,6 +12,7 @@
       "passport": "0.2.0",
       "passport-local": "0.1.6",
       "request": "2.33.0",
-      "crypto": "0.0.3"
+      "crypto": "0.0.3",
+      "async": "0.2.10"
   }
 }
