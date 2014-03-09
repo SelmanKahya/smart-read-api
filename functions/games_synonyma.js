@@ -26,7 +26,7 @@ exports.getQuestion = function(req, res){
 
     else {
 
-        db.execute('SELECT * FROM word_lookup WHERE user_id = ?', [user_id], function(err, result){
+        db.execute('SELECT * FROM word_lookup WHERE word_lookup_is_deleted != 1 AND user_id = ?', [user_id], function(err, result){
             if(err)
                 res.send(500, new resultModel.result(false, {}, ['Error while generating words!]']));
 
