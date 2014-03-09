@@ -1,3 +1,4 @@
+require('./lib/prototype.js');
 var express = require('express');
 var socket = require('./functions/socket.js');
 var http = require('http');
@@ -40,6 +41,10 @@ app.all('*', function(req, res, next) {
     next();
 });
 
+process.on('uncaughtException', function(err) {
+    console.log('Caught exception: ' + err);
+});
+
 // SET environment configuration
 var config = require('./config/env');
 
@@ -49,6 +54,8 @@ var member = require('./functions/member');
 var activity = require('./functions/activity');
 var wordLookup = require('./functions/word-lookup');
 var dictionary = require('./functions/dictionary');
+var games_synonyma = require('./functions/games_synonyma');
+var games_stats = require('./functions/games_stats');
 
 // ACTIVITY ROUTES
 app.post(   '/activity', AUTH.auth, activity.create);
@@ -72,6 +79,13 @@ app.post(   '/member/logout', member.logout);
 app.get(    '/user/activity', AUTH.auth, user.activity);
 app.get(    '/user/word-lookup', AUTH.auth, user.lookup);
 app.get(    '/user/word-lookup/books', AUTH.auth, user.books);
+
+// GAME Routes
+app.get(    '/games/synonyma/question/:level/:count', AUTH.auth, games_synonyma.getQuestion);
+
+// game stats
+app.get(    '/games/stats/:action/:game', AUTH.auth, games_stats.read);
+app.post(   '/games/stats/:action/:game', AUTH.auth, games_stats.create);
 
 // DICTIONARY
 app.get(    '/dictionary/:word', dictionary.lookup);
