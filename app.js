@@ -60,8 +60,6 @@ var games_stats = require('./functions/games_stats');
 // ACTIVITY ROUTES
 app.post(   '/activity', AUTH.auth, activity.create);
 app.get(    '/activity/:id', AUTH.auth, activity.read);
-app.post(   '/activity/:id', AUTH.auth, activity.update);
-app.delete( '/activity/:id', AUTH.auth, activity.delete);
 
 // WORD LOOKUP
 app.post(   '/word-lookup', AUTH.auth, wordLookup.create);
@@ -74,6 +72,7 @@ app.post(   '/member/register', member.register);
 app.post(   '/member/login', passport.authenticate('local'), member.login);
 app.get(    '/member/loggedin', member.loggedin);
 app.post(   '/member/logout', member.logout);
+app.post(   '/member/forgot', member.forgot);
 
 // USER Routes
 app.get(    '/user/activity', AUTH.auth, user.activity);
@@ -82,6 +81,7 @@ app.get(    '/user/word-lookup/books', AUTH.auth, user.books);
 
 // GAME Routes
 app.get(    '/games/synonyma/question/:level/:count', AUTH.auth, games_synonyma.getQuestion);
+app.post(   '/games/synonyma/response', AUTH.auth, games_synonyma.saveResponse);
 
 // game stats
 app.get(    '/games/stats/:action/:game', AUTH.auth, games_stats.read);
