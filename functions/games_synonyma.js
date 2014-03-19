@@ -41,3 +41,26 @@ exports.getQuestion = function(req, res){
         });
     }
 };
+
+exports.saveResponse = function(req, res){
+
+    var word = req.body.word;
+    var time = req.body.time;
+    var result = req.body.result == true ? "1" : "0";
+    var user_id = req.user.result.user_id;
+
+    if(word && (time > 0.5 && time < 12 )){
+        db.execute('INSERT INTO synonyma_response ' +
+            '(`synonyma_response_id`, `synonyma_response_word`, `synonyma_response_time`, `synonyma_response_result`, `user_id`) ' +
+            'VALUES (NULL, ?, ?, ?, ?)', [word, time, result, user_id], function(err, result){
+            if(err)
+                res.send(500, new resultModel.result(false, {}, ['Error while generating words!]']));
+
+            else
+                res.send(new resultModel.result(true, {}));
+        });
+    }
+
+    else
+        res.send(new resultModel.result(false, {}));
+}
